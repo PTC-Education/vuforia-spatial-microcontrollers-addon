@@ -1,4 +1,6 @@
 const SerialPort = require('serialport');
+const Readline = SerialPort.parsers.Readline;
+const parser = new Readline({ delimiter: '\r\n' });
 
 var portName = "";
 
@@ -18,7 +20,8 @@ let purts = new Promise((portconnected,rejected) => {
 });
 
 var port;
-var sensorReading = 'Nothing';
+var sensorReading = [];
+// var temp = 0;
 
 function openPort() {
     purts.then(function (result) {
@@ -33,6 +36,7 @@ function open(result) {
     port = new SerialPort(portName, 
             { baudRate: 9600},
     );
+    port.pipe(parser);
     port.open(function (err) {
         if (err) {
             return console.log('Error opening port: ', err.message)
@@ -48,17 +52,42 @@ function writePort(msg) {
     port.write(msg);
 }
 
-function readTemp() {
-    var raw = port.read();
-    if (raw != null) {
-        sensorReading = raw.toString('utf8').substring(0, 2);
-    }
+function readPort() {
+    parser.on('data', function (data) {
+        sensorReading = data.split(",");
+        // temp = sensorReading[0];
+        // temp = sensorReading[0];
+    //     // sensorReading = [];
+    // //     for (var i = 0; i < sensorReading.length; ++i) {
+    // //     console.log(sensorReading[i]);
+    // // }
+    //     // sensorReading = parseInt(data);
+    //     // console.log(sensorReading);
+    });
+
+    // // // var raw = port.read();
+    // // // if (raw != null) {
+    // // //     sensorReading = raw.toString('utf8').substring(0, 2);
+    // // // }
+
+    // port.on('readable', function() {
+    //     raw = port.read();
+    //     if (raw != null) {
+    //         temp = raw.toString('utf8');
+    //         console.log(temp);
+    //     }
+    // })
+}
+
+function getSensor () {
+    readPort();
     return sensorReading;
 }
 
 module.exports = {
     openPort : openPort,
     writePort : writePort,
-    readTemp : readTemp
+    // readPort : readPort,
+    getSensor : getSensor
 };
 

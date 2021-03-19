@@ -42,6 +42,9 @@ function startHardwareInterface() {
 
     server.addNode(objectName, TOOL_NAME, "screen", "node");
     server.addNode(objectName, TOOL_NAME, "temp", "node");
+    server.addNode(objectName, TOOL_NAME, "accelerometerX", "node");
+    server.addNode(objectName, TOOL_NAME, "accelerometerY", "node");
+    server.addNode(objectName, TOOL_NAME, "accelerometerZ", "node");
     
 
     server.addReadListener(objectName, TOOL_NAME, "screen", function(data){
@@ -58,22 +61,25 @@ function startHardwareInterface() {
     	}
     });
 
-    setTempVal();
+    setInterval(() => { readSensor(); }, 200);
 
     updateEvery(0, 10);
 
 }
 
 function updateEvery(i, time){
-setTimeout(() => {
-	updateEvery(++i, time);
-}, time)
+    setTimeout(() => {
+    	updateEvery(++i, time);
+    }, time)
 }
 
-function setTempVal() {
-    sensorData = serial.readTemp();
-    server.write(objectName, TOOL_NAME, "temp", parseInt(sensorData), "f");
-    setInterval(() => { setTempVal(); }, 2000);
+function readSensor() {
+    var sensorData = serial.getSensor();
+    
+    server.write(objectName, TOOL_NAME, "temp", parseInt(sensorData[0]), "f");
+    server.write(objectName, TOOL_NAME, "accelerometerX", parseInt(sensorData[1]), "f");
+    server.write(objectName, TOOL_NAME, "accelerometerY", parseInt(sensorData[2]), "f");
+    server.write(objectName, TOOL_NAME, "accelerometerZ", parseInt(sensorData[3]), "f");
 }
 
 server.addEventListener("initialize", function () {
