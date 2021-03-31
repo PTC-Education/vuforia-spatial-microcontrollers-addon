@@ -34,7 +34,7 @@ function open(result) {
     console.log('portName is ' + portName)
     // baudRate must match with .hex file
     port = new SerialPort(portName, 
-            { baudRate: 9600},
+            { baudRate: 115200},
     );
     port.pipe(parser);
     port.open(function (err) {
@@ -55,28 +55,7 @@ function writePort(msg) {
 function readPort() {
     parser.on('data', function (data) {
         sensorReading = data.split(",");
-        // temp = sensorReading[0];
-        // temp = sensorReading[0];
-    //     // sensorReading = [];
-    // //     for (var i = 0; i < sensorReading.length; ++i) {
-    // //     console.log(sensorReading[i]);
-    // // }
-    //     // sensorReading = parseInt(data);
-    //     // console.log(sensorReading);
-    });
-
-    // // // var raw = port.read();
-    // // // if (raw != null) {
-    // // //     sensorReading = raw.toString('utf8').substring(0, 2);
-    // // // }
-
-    // port.on('readable', function() {
-    //     raw = port.read();
-    //     if (raw != null) {
-    //         temp = raw.toString('utf8');
-    //         console.log(temp);
-    //     }
-    // })
+    })
 }
 
 function getSensor () {
@@ -87,7 +66,6 @@ function getSensor () {
 module.exports = {
     openPort : openPort,
     writePort : writePort,
-    // readPort : readPort,
     getSensor : getSensor
 };
 
