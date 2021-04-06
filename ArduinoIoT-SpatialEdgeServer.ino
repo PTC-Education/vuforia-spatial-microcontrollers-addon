@@ -25,7 +25,6 @@
 #include <ArduinoJson.h>
 #include <Arduino_LSM6DS3.h>
 
-#include "arduino_secrets.h" 
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
 char ssid[] = "RPiSpatialToolbox";        // your network SSID (name)
 char pass[] = "Vuforia123";    // your network password (use for WPA, or use as key for WEP)
