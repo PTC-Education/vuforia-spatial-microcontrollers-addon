@@ -52,7 +52,7 @@ async function arduinoComm(ip,payload) {
         server.write(objectName, TOOL_NAME, "signalStrength", signalStrength, "f");
     })
     .catch(err => console.error(err));
-    setTimeout(() => { arduinoComm(IPaddress,body); }, sensorRefresh);
+    setTimeout(() => { arduinoComm(defaultIP,body); }, sensorRefresh);
     console.log(payload)
 }
 
@@ -79,9 +79,9 @@ if (exports.enabled) {
         };
     }
     objectName = exports.settings.arduinoName.value;
-    IPaddress = exports.settings.arduinoIP.value;
+    defaultIP = exports.settings.arduinoIP.value;
     console.log("Arduino IoT: " + objectName);
-    console.log("with IP address: " + IPaddress);
+    console.log("with IP address: " + defaultIP);
 
     server.addEventListener('reset', function () {
         settings = server.loadHardwareInterface(__dirname);
@@ -115,7 +115,7 @@ function startHardwareInterface() {
     	}
     });
 
-    arduinoComm(IPaddress,body);
+    arduinoComm(defaultIP,body);
 
     updateEvery(0, 1000);
 
