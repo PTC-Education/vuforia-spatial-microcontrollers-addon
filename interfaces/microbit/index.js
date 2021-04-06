@@ -56,12 +56,12 @@ function startHardwareInterface() {
     server.enableDeveloperUI(true)
 
     if (complexity == 'sensor' || complexity == 'beginner') {
-        server.addNode(objectName, TOOL_NAME, "accelerometerX", "node");
-        server.addNode(objectName, TOOL_NAME, "buttonA", "node");
-        server.addNode(objectName, TOOL_NAME, "buttonB", "node");
+        server.addNode(objectName, TOOL_NAME, "accelerometerX", "node", {x: 60, y: -20, scale:0.135});
+        server.addNode(objectName, TOOL_NAME, "buttonA", "node", {x: -50, y: -40, scale:0.135});
+        server.addNode(objectName, TOOL_NAME, "buttonB", "node", {x: -50, y: -20, scale:0.135});
 
         if (complexity == 'beginner') {
-            server.addNode(objectName, TOOL_NAME, "screen", "node");
+            server.addNode(objectName, TOOL_NAME, "screen", "node", {x: 60, y: 0, scale:0.135});
 
             server.removeNode(objectName, TOOL_NAME, "accelerometerY");
             server.removeNode(objectName, TOOL_NAME, "accelerometerZ");
@@ -74,10 +74,10 @@ function startHardwareInterface() {
         if (complexity == 'sensor') {
             server.removeNode(objectName, TOOL_NAME, "screen");
 
-            server.addNode(objectName, TOOL_NAME, "accelerometerY", "node");
-            server.addNode(objectName, TOOL_NAME, "accelerometerZ", "node");
-            server.addNode(objectName, TOOL_NAME, "brightness", "node");
-            server.addNode(objectName, TOOL_NAME, "temp", "node");
+            server.addNode(objectName, TOOL_NAME, "accelerometerY", "node", {x: 60, y: 0, scale:0.135});
+            server.addNode(objectName, TOOL_NAME, "accelerometerZ", "node", {x: 60, y: 20, scale:0.135});
+            server.addNode(objectName, TOOL_NAME, "brightness", "node", {x: -50, y: 0, scale:0.135});
+            server.addNode(objectName, TOOL_NAME, "temp", "node", {x: -50, y: 20, scale:0.135});
 
             sensorRefresh = 10;
         }
@@ -85,17 +85,12 @@ function startHardwareInterface() {
     
 
     server.addReadListener(objectName, TOOL_NAME, "screen", function(data){
-    	console.log("in read listener");
-    	if (data.value == 1) {
-    		// console.log("data is 1");
-    		setTimeout(() => { serial.writePort("1,"); } , 0);
-    		// console.log("wrote to port");
-    	}
-    	else if (data.value == 0) {
-    		// console.log("data is 0");
-    		setTimeout(() => { serial.writePort("0,"); } , 0);
-    		// console.log("wrote to port");
-    	}
+        console.log("in read listener");
+
+        var info = String(data.value);
+        var end = ",";
+        var val = info.concat(end);
+        setTimeout(() => { serial.writePort(val); }, 0);
     });
 
     readSensor();
@@ -106,13 +101,12 @@ function startHardwareInterface() {
 
 function updateEvery(i, time){
     setTimeout(() => {
-    	updateEvery(++i, time);
+        updateEvery(++i, time);
     }, time)
 }
 
 async function readSensor() {
     var sensorData = serial.getSensor();
-    // console.log(parseInt(sensorData[0]) + " " + parseInt(sensorData[6]));
     
     server.write(objectName, TOOL_NAME, "temp", parseInt(sensorData[0]), "f");
     server.write(objectName, TOOL_NAME, "accelerometerX", parseInt(sensorData[1]), "f");
