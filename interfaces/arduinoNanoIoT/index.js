@@ -8,6 +8,7 @@ exports.configurable = true;
 
 var objectName = "ArduinoNanoIoT";
 var TOOL_NAME = "ArduinoNanoIoT1";
+
 var defaultIP = "192.168.50.174"
 
 var sensorRefresh = 100;
@@ -63,6 +64,7 @@ if (exports.enabled) {
     function setup() {
         exports.settings = {
             nanoName: {
+
                 value: settings('objectName', objectName),
                 type: 'text',
                 default: objectName,
@@ -79,16 +81,19 @@ if (exports.enabled) {
             }
         };
     }
+
     objectName = exports.settings.nanoName.value;
     defaultIP = exports.settings.nanoIP.value;
     console.log("microbit: " + objectName);
     console.log("with complexity: " + defaultIP);
+
 
     server.addEventListener('reset', function () {
         settings = server.loadHardwareInterface(__dirname);
         setup();
 
         console.log("Microbit: Settings Loaded: ", objectName);
+
     }) 
 }
 
@@ -134,3 +139,4 @@ server.addEventListener("initialize", function () {
         startHardwareInterface();
     }, 1000)
 });
+
