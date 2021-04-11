@@ -9,9 +9,10 @@ exports.configurable = true;
 var objectName = "ArduinoNanoIoT";
 var TOOL_NAME = "ArduinoNanoIoT1";
 
-var defaultIP = '192.168.1.180';
+var defaultIP = "192.168.50.174"
 
-sensorRefresh = 100;
+var sensorRefresh = 100;
+
 
 // set vars for input values from Arduino IoT
 var accelX;
@@ -56,12 +57,14 @@ async function arduinoComm(ip,payload) {
     console.log(payload)
 }
 
+
 if (exports.enabled) {
-    setup();    
+    setup();
 
     function setup() {
         exports.settings = {
-            arduinoName: {
+            nanoName: {
+
                 value: settings('objectName', objectName),
                 type: 'text',
                 default: objectName,
@@ -69,8 +72,8 @@ if (exports.enabled) {
                 helpText: 'The name of the object that connects to this hardware interface'
             },
             // Complexity level for the object
-            arduinoIP: { 
-                value: settings('Arduino IP Address', defaultIP), 
+           nanoIP: { 
+                value: settings('nanoIP', defaultIP), 
                 type: 'text',
                 default: defaultIP,
                 disabled: false,
@@ -78,16 +81,19 @@ if (exports.enabled) {
             }
         };
     }
-    objectName = exports.settings.arduinoName.value;
-    defaultIP = exports.settings.arduinoIP.value;
-    console.log("Arduino IoT: " + objectName);
-    console.log("with IP address: " + defaultIP);
+
+    objectName = exports.settings.nanoName.value;
+    defaultIP = exports.settings.nanoIP.value;
+    console.log("microbit: " + objectName);
+    console.log("with complexity: " + defaultIP);
+
 
     server.addEventListener('reset', function () {
         settings = server.loadHardwareInterface(__dirname);
         setup();
 
-        console.log("Arduino IoT: Settings Loaded: ", objectName);
+        console.log("Microbit: Settings Loaded: ", objectName);
+
     }) 
 }
 
@@ -103,16 +109,16 @@ function startHardwareInterface() {
     server.addNode(objectName, TOOL_NAME, "led", "node");
     
     server.addReadListener(objectName, TOOL_NAME, "led", function(data){
-    	console.log("in read listener");
-    	if (data.value == 1) {
-    		// console.log("data is 1");
-    		setTimeout(() => { body = { '13': 1}; } , 0);
-    	}
-    	else if (data.value == 0) {
-    		// console.log("data is 0");
-    		setTimeout(() => { body = { '13': 0}; } , 0);
-    		// console.log("wrote to port");
-    	}
+        console.log("in read listener");
+        if (data.value == 1) {
+            // console.log("data is 1");
+            setTimeout(() => { body = { '13': 1}; } , 0);
+        }
+        else if (data.value == 0) {
+            // console.log("data is 0");
+            setTimeout(() => { body = { '13': 0}; } , 0);
+            // console.log("wrote to port");
+        }
     });
 
     arduinoComm(defaultIP,body);
@@ -123,7 +129,7 @@ function startHardwareInterface() {
 
 function updateEvery(i, time){
     setTimeout(() => {
-    	updateEvery(++i, time);
+        updateEvery(++i, time);
     }, time)
 }
 
@@ -133,3 +139,4 @@ server.addEventListener("initialize", function () {
         startHardwareInterface();
     }, 1000)
 });
+
