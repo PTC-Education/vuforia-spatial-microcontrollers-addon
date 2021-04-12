@@ -1,4 +1,4 @@
-# vuforia-spatial-basic-interfaces-addon
+# vuforia-spatial-microcontrollers-addon
 
 This repository hosts a set of hardware interfaces for DIY and consumer
 hardware. We hope that these interfaces will enable you to easily get started
@@ -12,22 +12,21 @@ Join the conversations in our [discourse forum](https://forum.spatialtoolbox.vuf
 
 ## Supported hardware
 
-- [Philips Hue](./interfaces/philipsHue/README.md)
-- Arduino: Documentation coming soon
-- LEGO WeDo / Boost: Activate the Hardware interface and push the green button on your Lego Wedo / Boost.
+- micro:bit : Documentation coming soon
+- Arduino NANO 33 IoT : Documentation coming soon
 
 ## Install
 Once you have installed the Vuforia Spatial Edge Server clone this repo into the ```addons``` folder
 
 ```bash
 cd addons
-git clone https://github.com/ptcrealitylab/vuforia-spatial-basic-interfaces-addon.git
+git clone https://github.com/PTC-Education/vuforia-spatial-microcontrollers-addon.git
 ```
 
-Next, enter the vuforia-spatial-basic-interfaces-addon directory and install all dependencies.
+Next, enter the vuforia-spatial-microcontrollers-addon directory and install all dependencies.
 
 ```bash
-cd vuforia-spatial-basic-interfaces-addon
+cd vuforia-spatial-microcontrollers-addon
 npm install
 ```
 
@@ -48,4 +47,3 @@ npm install --global --production windows-build-tools
 ```sh
 sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
 ```
-# vuforia-spatial-microcontrollers-addon
