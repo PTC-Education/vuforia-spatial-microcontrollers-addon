@@ -138,7 +138,7 @@ void loop() {
 
               JsonObject data = body.as<JsonObject>();
               
-              for (int i = 1; i<=13; i++) {
+              for (int i = 1; i<=21; i++) {
                 String pin = String(i);
                 if (data.containsKey(pin)) {
                   pinMode(i, OUTPUT);
@@ -146,7 +146,7 @@ void loop() {
                   digitalWrite(i,val);
                 }
               }
-              for (int i = 0; i<=7; i++) {
+              for (int i = 1; i<=19; i++) {
                 String pin = "A";
                 pin = pin + String(i);
                 if (data.containsKey(pin)) {
@@ -161,6 +161,7 @@ void loop() {
           } else {    // if you got a newline, then clear currentLine:
 // Look for list of pins that you want to read
             if (currentLine.startsWith("POST")) {
+              Serial.println(currentLine);
               int firstSpace = currentLine.indexOf(' ');
               int lastSpace = currentLine.lastIndexOf(' ');
               String readPins = currentLine.substring(firstSpace+2,lastSpace+1);
