@@ -150,7 +150,7 @@ void loop() {
                 String pin = "A";
                 pin = pin + String(i);
                 if (data.containsKey(pin)) {
-                  pinMode(pin.toInt(), OUTPUT);
+                  pinMode(i, OUTPUT);
                   int val = body[pin];
                   analogWrite(i,val);
                 }
