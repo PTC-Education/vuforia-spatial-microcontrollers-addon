@@ -1,3 +1,11 @@
+/*
+ *     serial.js
+ *     Alina Shah, 4/29/2021
+ *     micro:bit
+ *
+ *     Finds micro:bit serial port and defines functions to interact with the port
+ */
+
 const SerialPort = require('serialport');
 const Readline = SerialPort.parsers.Readline;
 const parser = new Readline({ delimiter: '\r\n' });
@@ -21,8 +29,8 @@ let purts = new Promise((portconnected,rejected) => {
 
 var port;
 var sensorReading = [];
-// var temp = 0;
 
+// opens serial port connection with micro:bit
 function openPort() {
     purts.then(function (result) {
         console.log('starting hardware interface');
@@ -48,21 +56,25 @@ function open(result) {
     });
 }
 
+// writes messages to serial port
 function writePort(msg) {
     port.write(msg);
 }
 
+// splits array read from serial port and the comma
 function readPort() {
     parser.on('data', function (data) {
         sensorReading = data.split(",");
     })
 }
 
+// returns all values read from the port
 function getSensor () {
     readPort();
     return sensorReading;
 }
 
+// allows access to these functions within index.js file
 module.exports = {
     openPort : openPort,
     writePort : writePort,
